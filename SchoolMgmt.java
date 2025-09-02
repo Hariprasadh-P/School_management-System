@@ -1,6 +1,4 @@
 import java.util.*;
-
-// Abstraction + Encapsulation
 abstract class Person {
     private int id;
     private String name;
@@ -16,10 +14,8 @@ abstract class Person {
     public int getId() { return id; }
     public String getName() { return name; }
 
-    public abstract String getRole(); // Polymorphism
+    public abstract String getRole();
 }
-
-// Inheritance
 class Teacher extends Person {
     public Teacher(int id, String name) {
         super(id, name);
@@ -41,8 +37,6 @@ class Student extends Person {
         return "Studying";
     }
 }
-
-// Main driver
 public class SchoolMgmt {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -61,15 +55,12 @@ public class SchoolMgmt {
                 if (!sc.hasNextInt()) {
                     throw new InputMismatchException("Menu choice must be a number.");
                 }
-
                 int ch = sc.nextInt();
-                sc.nextLine(); // clear buffer
-
+                sc.nextLine(); 
                 if (ch == 5) {
                     System.out.println("Exiting School Management System...");
                     break;
                 }
-
                 switch (ch) {
                     case 1:
                         try {
@@ -87,7 +78,6 @@ public class SchoolMgmt {
                             sc.nextLine(); // clear buffer
                         }
                         break;
-
                     case 2:
                         try {
                             System.out.print("Enter Student ID: ");
@@ -104,7 +94,6 @@ public class SchoolMgmt {
                             sc.nextLine();
                         }
                         break;
-
                     case 3:
                         System.out.println("\n--- Teachers ---");
                         boolean tFound = false;
@@ -116,7 +105,6 @@ public class SchoolMgmt {
                         }
                         if (!tFound) System.out.println("No teachers available.");
                         break;
-
                     case 4:
                         System.out.println("\n--- Students ---");
                         boolean sFound = false;
@@ -132,7 +120,6 @@ public class SchoolMgmt {
                     default:
                         System.out.println("Invalid choice.");
                 }
-
             } catch (InputMismatchException e) {
                 System.out.println("Error: " + e.getMessage());
                 sc.nextLine();
