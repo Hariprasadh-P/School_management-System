@@ -1,132 +1,95 @@
 import java.util.*;
-abstract class Person {
-    private int id;
-    private String name;
 
-    public Person(int id, String name) {
-        if (id <= 0) throw new IllegalArgumentException("ID must be positive.");
-        if (name == null || name.trim().isEmpty())
-            throw new IllegalArgumentException("Name cannot be empty.");
-        this.id = id;
-        this.name = name.trim();
-    }
-
-    public int getId() { return id; }
-    public String getName() { return name; }
-
-    public abstract String getRole();
-}
-class Teacher extends Person {
-    public Teacher(int id, String name) {
-        super(id, name);
-    }
-
-    @Override
-    public String getRole() {
-        return "Teaching";
-    }
-}
-
-class Student extends Person {
-    public Student(int id, String name) {
-        super(id, name);
-    }
-
-    @Override
-    public String getRole() {
-        return "Studying";
-    }
-}
 public class SchoolMgmt {
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        Scanner scanner = new Scanner(System.in);
         List<Person> people = new ArrayList<>();
-
         while (true) {
+            System.out.println("\n=== School Management System ===");
+            System.out.println("1. Add Teacher");
+            System.out.println("2. Add Student");
+            System.out.println("3. Show Teachers");
+            System.out.println("4. Show Students");
+            System.out.println("5. Exit");
+            System.out.print("Choose an option: ");
+            int choice;
             try {
-                System.out.println("\n===== SCHOOL MANAGEMENT =====");
-                System.out.println("1. Add Teacher");
-                System.out.println("2. Add Student");
-                System.out.println("3. List Teachers");
-                System.out.println("4. List Students");
-                System.out.println("5. Exit");
-                System.out.print("Choose option: ");
-
-                if (!sc.hasNextInt()) {
-                    throw new InputMismatchException("Menu choice must be a number.");
-                }
-                int ch = sc.nextInt();
-                sc.nextLine(); 
-                if (ch == 5) {
-                    System.out.println("Exiting School Management System...");
-                    break;
-                }
-                switch (ch) {
-                    case 1:
-                        try {
-                            System.out.print("Enter Teacher ID: ");
-                            int tId = sc.nextInt();
-                            sc.nextLine();
-                            System.out.print("Enter Teacher Name: ");
-                            String tName = sc.nextLine();
-                            people.add(new Teacher(tId, tName));
-                            System.out.println("Teacher added.");
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Error: " + e.getMessage());
-                        } catch (InputMismatchException e) {
-                            System.out.println("Invalid input. ID must be a number.");
-                            sc.nextLine(); // clear buffer
-                        }
-                        break;
-                    case 2:
-                        try {
-                            System.out.print("Enter Student ID: ");
-                            int sId = sc.nextInt();
-                            sc.nextLine();
-                            System.out.print("Enter Student Name: ");
-                            String sName = sc.nextLine();
-                            people.add(new Student(sId, sName));
-                            System.out.println("Student added.");
-                        } catch (IllegalArgumentException e) {
-                            System.out.println("Error: " + e.getMessage());
-                        } catch (InputMismatchException e) {
-                            System.out.println("Invalid input. ID must be a number.");
-                            sc.nextLine();
-                        }
-                        break;
-                    case 3:
-                        System.out.println("\n--- Teachers ---");
-                        boolean tFound = false;
-                        for (Person p : people) {
-                            if (p instanceof Teacher) {
-                                System.out.println("ID: " + p.getId() + " | Name: " + p.getName() + " | Role: " + p.getRole());
-                                tFound = true;
-                            }
-                        }
-                        if (!tFound) System.out.println("No teachers available.");
-                        break;
-                    case 4:
-                        System.out.println("\n--- Students ---");
-                        boolean sFound = false;
-                        for (Person p : people) {
-                            if (p instanceof Student) {
-                                System.out.println("ID: " + p.getId() + " | Name: " + p.getName() + " | Role: " + p.getRole());
-                                sFound = true;
-                            }
-                        }
-                        if (!sFound) System.out.println("No students available.");
-                        break;
-
-                    default:
-                        System.out.println("Invalid choice.");
-                }
-            } catch (InputMismatchException e) {
-                System.out.println("Error: " + e.getMessage());
-                sc.nextLine();
+                choice = scanner.nextInt();
+                scanner.nextLine();
             } catch (Exception e) {
-                System.out.println("Unexpected error: " + e.getMessage());
+                System.out.println("Please enter a valid number.");
+                scanner.nextLine();
+                continue;
+            }
+            if (choice == 5) {
+                System.out.println("Goodbye!");
+                break;
+            }
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter Teacher ID: ");
+                    try {
+                        int id = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Enter Teacher Name: ");
+                        String name = scanner.nextLine();
+                        people.add(new Teacher(id, name));
+                        System.out.println("Teacher added successfully!");
+                    } catch (Exception e) {
+                        System.out.println("Error: Invalid input for ID.");
+                        scanner.nextLine();
+                    }
+                    break;
+
+                case 2:
+                    System.out.print("Enter Student ID: ");
+                    try {
+                        int id = scanner.nextInt();
+                        scanner.nextLine();
+                        System.out.print("Enter Student Name: ");
+                        String name = scanner.nextLine();
+                        people.add(new Student(id, name));
+                        System.out.println("Student added successfully!");
+                    } catch (Exception e) {
+                        System.out.println("Error: Invalid input for ID.");
+                        scanner.nextLine();
+                    }
+                    break;
+
+                case 3:
+                    System.out.println("\n--- Teachers ---");
+                    boolean hasTeachers = false;
+                    for (Person p : people) {
+                        if (p instanceof Teacher) {
+                            System.out
+                                    .println("ID: " + p.getId() + ", Name: " + p.getName() + ", Role: " + p.getRole());
+                            hasTeachers = true;
+                        }
+                    }
+                    if (!hasTeachers) {
+                        System.out.println("No teachers found.");
+                    }
+                    break;
+
+                case 4:
+                    System.out.println("\n--- Students ---");
+                    boolean hasStudents = false;
+                    for (Person p : people) {
+                        if (p instanceof Student) {
+                            System.out
+                                    .println("ID: " + p.getId() + ", Name: " + p.getName() + ", Role: " + p.getRole());
+                            hasStudents = true;
+                        }
+                    }
+                    if (!hasStudents) {
+                        System.out.println("No students found.");
+                    }
+                    break;
+
+                default:
+                    System.out.println("Invalid option. Please choose 1-5.");
             }
         }
-        sc.close();
+        scanner.close();
     }
 }
